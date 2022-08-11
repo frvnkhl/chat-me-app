@@ -1,5 +1,8 @@
 import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
+import { Server } from "socket.io";
+import { chat } from "./chat";
+import http from 'http';
 dotenv.config();
 
 const app: Express = express();
@@ -9,6 +12,17 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Trying out");
 });
 
-app.listen(port, () => {
+const httpServer = http.createServer(app);
+
+const io = new Server(httpServer, {
+  cors: {
+    origin: "http://localhost:3000",
+    credentials: true,
+  },
+});
+chat(io);
+
+
+httpServer.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
