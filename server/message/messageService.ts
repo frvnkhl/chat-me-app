@@ -28,7 +28,7 @@ const harperSaveMessage = (message: Message) => {
     url: dbUrl,
     headers: {
       "Content-Type": "application/json",
-      Authorization: dbAPI,
+      Authorization: `Basic ${dbAPI}`,
     },
     data: data,
   };
@@ -46,4 +46,33 @@ const harperSaveMessage = (message: Message) => {
   });
 };
 
-export { harperSaveMessage };
+const harperGetMessages = (room: string) => {
+  if (!dbUrl || !dbAPI) return null;
+
+  const data = JSON.stringify({
+    operation: "sql",
+    sql: `SELECT * FROM realtime_chat_app.messages WHERE room = '${room}' LIMIT 100`,
+  });
+
+  const config = {
+    method: "post",
+    url: dbUrl,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Basic ${dbAPI}`,
+    },
+    data: data,
+  };
+
+  return new Promise((resolve, reject) => {
+    axios(config)
+      .then((res) => {
+        resolve(JSON.stringify(res.data));
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
+export { harperSaveMessage, harperGetMessages };

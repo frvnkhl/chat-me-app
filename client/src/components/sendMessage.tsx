@@ -28,7 +28,7 @@ const SendMessage = ({
   };
 
   return (
-    <div className="flex w-[75vw]">
+    <div className="flex mx-3 bg-[#EEEEEE] rounded-2xl p-3 shadow-md">
       <Input
         label="Write a message"
         name="newMessage"

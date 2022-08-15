@@ -39,7 +39,7 @@ const Home = ({
   };
 
   return (
-    <div className="container mt-[30%] mx-auto text-center">
+    <div className="container mt-[30%] mx-auto text-center bg-[#eeeeee] rounded-2xl p-3 shadow-md">
       <h1 className="text-3xl my-2 font-bold">Enter your name</h1>
       <Input
         label="name"
