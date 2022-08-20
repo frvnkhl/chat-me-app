@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Message } from "./messageModel";
+import { insertDataConfig, postMethodConfig, sqlDataConfig } from "../db/dbHelper";
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -12,28 +13,8 @@ const harperSaveMessage = (message: Message) => {
 
   if (!dbUrl || !dbAPI) return null;
 
-  console.log("got passed the initial condition");
-
-  const data = JSON.stringify({
-    operation: "insert",
-    schema: "realtime_chat_app",
-    table: "messages",
-    records: [message],
-  });
-
-  console.log({ data: data });
-
-  const config = {
-    method: "post",
-    url: dbUrl,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Basic ${dbAPI}`,
-    },
-    data: data,
-  };
-
-  console.log({ config: config });
+  const data = insertDataConfig(message, 'messages');
+  const config = postMethodConfig(dbUrl, dbAPI, data);
 
   return new Promise((resolve, reject) => {
     axios(config)
@@ -49,20 +30,11 @@ const harperSaveMessage = (message: Message) => {
 const harperGetMessages = (room: string) => {
   if (!dbUrl || !dbAPI) return null;
 
-  const data = JSON.stringify({
-    operation: "sql",
-    sql: `SELECT * FROM realtime_chat_app.messages WHERE room = '${room}' LIMIT 100`,
-  });
+  const data = sqlDataConfig(
+    `SELECT * FROM realtime_chat_app.messages WHERE room = '${room}' LIMIT 100`
+  );
 
-  const config = {
-    method: "post",
-    url: dbUrl,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Basic ${dbAPI}`,
-    },
-    data: data,
-  };
+  const config = postMethodConfig(dbUrl, dbAPI, data);
 
   return new Promise((resolve, reject) => {
     axios(config)

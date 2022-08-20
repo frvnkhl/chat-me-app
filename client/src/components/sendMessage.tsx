@@ -1,5 +1,5 @@
 import { Button, Input } from "@material-tailwind/react";
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, ChangeEvent } from "react";
 import { Socket } from "socket.io-client";
 
 const SendMessage = ({

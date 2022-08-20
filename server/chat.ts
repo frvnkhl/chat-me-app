@@ -12,8 +12,10 @@ class Connection {
     this.socket = socket;
     this.io = io;
 
+    //pass userId instead of username
     socket.on("joinRoom", (data: { username: string; room: string }) => {
       const { username, room } = data;
+      //get user
       socket.join(room);
 
       let createdTime = Date.now();
@@ -32,8 +34,10 @@ class Connection {
       });
 
       chatRoom = room;
-      allUsers.push({ id: socket.id, username, room });
+      //change user room to the name of the room
+      allUsers.push({ id: socket.id, username, room, password: 'lalala' });
 
+      //filter users in the room through the db
       const chatRoomUsers = allUsers.filter((user) => user.room === room);
       socket.to(room).emit("chatRoomUsers", chatRoomUsers);
       socket.emit("chatRoomUsers", chatRoomUsers);
@@ -55,9 +59,12 @@ class Connection {
 
     socket.on(
       "leaveRoom",
+      //pass id instead of username
       (data: { username: string; room: string; createdTime: Date }) => {
         const { username, room, createdTime } = data;
+        //get user
         socket.leave(room);
+        //change room to ''
         allUsers = leaveRoom(socket.id, allUsers);
         socket.to(room).emit("chatRoomUsers", allUsers);
         socket.to(room).emit("receiveMessage", {
@@ -78,7 +85,9 @@ class Connection {
         allUsers = leaveRoom(socket.id, allUsers);
         socket.to(chatRoom).emit("chatRoomUsers", allUsers);
         socket.to(chatRoom).emit("receiveMessage", {
+          username: chatBot,
           message: `${user.username} has disconnected from the chat`,
+          createdTime: new Date(),
         });
       }
     });

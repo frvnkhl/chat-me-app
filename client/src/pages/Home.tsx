@@ -20,13 +20,11 @@ const Home = ({
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setUsername(value);
-    console.log(username);
   };
 
   const handleRoomChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target;
     setRoom(value);
-    console.log(value);
   };
 
   const handleEnterChat = () => {
