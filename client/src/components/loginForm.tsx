@@ -9,6 +9,7 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 import LoadingSpinner from "./micro/loadingSpinner";
 import { setIsAuthenticated } from "../redux/features/authSlice";
+import { useAppDispatch } from "../redux/hooks";
 
 type UserLoginForm = {
   username: string;
@@ -17,7 +18,7 @@ type UserLoginForm = {
 
 const LoginForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
 //   useEffect(() => {
