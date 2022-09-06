@@ -2,6 +2,8 @@ import { ChangeEvent, Dispatch, SetStateAction } from "react";
 import { Alert, Button, Input } from "@material-tailwind/react";
 import { Socket } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
+import LoginForm from "../components/loginForm";
+import { useSelector } from "react-redux";
 
 const Home = ({
   username,
@@ -17,6 +19,7 @@ const Home = ({
   socket: Socket;
 }) => {
   const navigate = useNavigate();
+  // const selector = useSelector(state => state.user)
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setUsername(value);

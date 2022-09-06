@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import io from "socket.io-client";
 import Chat from "./pages/Chat";
+import Auth from "./pages/Auth";
 
 const socket = io("http://localhost:6299");
 
@@ -35,6 +36,10 @@ const App = () => {
               socket={socket}
             />
           }
+        />
+        <Route
+          path="/auth"
+          element={<Auth />}
         />
       </Routes>
     </BrowserRouter>
