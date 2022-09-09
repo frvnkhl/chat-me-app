@@ -4,7 +4,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { setUser } from "../redux/features/userSlice";
 import { loginUser } from "../services/authService";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import LoadingSpinner from "./micro/loadingSpinner";
@@ -40,12 +39,13 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (data: UserLoginForm) => {
-    console.log({ data: data });
+    // console.log({ data: data });
     setLoading(true);
     await loginUser(data).then((res) => {
-        console.log({res: res});
+        // console.log({res: res});
         dispatch(setUser(res.user));
         dispatch(setIsAuthenticated(true));
+        localStorage.setItem('user', JSON.stringify(res.user));
         navigate('/');
     }).catch((err) => {
       console.log({err: err});

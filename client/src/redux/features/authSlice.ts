@@ -1,13 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { isTokenValid } from "../../services/tokenService";
 
-const initialState: boolean = false;
+const initialState: boolean = isTokenValid(localStorage.getItem("token"));
 
 const authSlice = createSlice({
-  name: "user",
+  name: "auth",
   initialState,
   reducers: {
     setIsAuthenticated(state, action: PayloadAction<boolean>) {
-      state = action.payload;
+      // console.log({authPayload: action.payload});      
+      return action.payload;
     },
   },
 });

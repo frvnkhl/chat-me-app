@@ -9,7 +9,6 @@ import bcrypt from "bcrypt";
 import { Request } from "express";
 import { generateUniqueId } from "../utils/generateId";
 import * as jwt from "jsonwebtoken";
-import { JwtPayload } from "jsonwebtoken";
 import { CustomRequest } from "../authentication/jwtAuth";
 
 const dbUrl = process.env.HARPERDB_URL;
@@ -28,7 +27,7 @@ const registerUserService = async (req: Request) => {
           id: generateUniqueId(),
           username: req.body.username,
           password: hashedPassword,
-          room: "main",
+          room: "",
         };
 
         const userData = insertDataConfig(user, "users");
@@ -36,7 +35,7 @@ const registerUserService = async (req: Request) => {
 
         return axios(userConfig)
           .then((res) => {
-            console.log("user created");
+            console.log("User created");
             return true;
           })
           .catch((err) => {
@@ -125,7 +124,7 @@ const getCurrentUserService = async (req: CustomRequest) => {
   if (typeof user !== "string") {
     const foundUser = await getUser(user.username);
     return formatUser(foundUser);
-  };
+  }
 
   return null;
 };
@@ -151,13 +150,38 @@ const getUser = async (username: string) => {
         return err;
       });
 
-    const getResponse = () => {
-      return response;
+    const getResponse = async () => {
+      return await response;
     };
 
-    return getResponse();
+    return await getResponse();
   } catch (err) {
     return err;
+  }
+};
+
+const changeRoomService = async (userId: string, roomId: string) => {
+  try {
+    if (!dbUrl || !dbAPI) return null;
+    const data = sqlDataConfig(
+      `UPDATE realtime_chat_app.users SET room = '${roomId}' WHERE id = '${userId}'`
+    );
+    const config = postMethodConfig(dbUrl, dbAPI, data);
+    const response: any = await axios(config)
+      .then((res) => {
+        return true;
+      })
+      .catch((err) => {
+        return false;
+      });
+
+    const getResponse = async () => {
+      return await response;
+    };
+
+    return await getResponse();
+  } catch (err) {
+    return false;
   }
 };
 
@@ -166,4 +190,5 @@ export {
   userExists,
   loginUserService,
   getCurrentUserService,
+  changeRoomService,
 };
