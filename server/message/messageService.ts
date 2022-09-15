@@ -1,6 +1,10 @@
 import axios from "axios";
 import { Message } from "./messageModel";
-import { insertDataConfig, postMethodConfig, sqlDataConfig } from "../db/dbHelper";
+import {
+  insertDataConfig,
+  postMethodConfig,
+  sqlDataConfig,
+} from "../db/dbHelper";
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -13,7 +17,7 @@ const harperSaveMessage = (message: Message) => {
 
   if (!dbUrl || !dbAPI) return null;
 
-  const data = insertDataConfig(message, 'messages');
+  const data = insertDataConfig(message, "messages");
   const config = postMethodConfig(dbUrl, dbAPI, data);
 
   return new Promise((resolve, reject) => {

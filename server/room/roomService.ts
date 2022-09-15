@@ -100,6 +100,33 @@ const getRoom = async (roomId: string) => {
   }
 };
 
+const getAllRooms = async () => {
+    try {
+    if (!dbUrl || !dbAPI) return null;
+    const data = sqlDataConfig(
+      'SELECT * FROM realtime_chat_app.rooms'
+    );
+
+    const config = postMethodConfig(dbUrl, dbAPI, data);
+    const response: any = await axios(config)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        return err;
+      });
+
+    const getResponse = async () => {
+      return await response;
+    };
+
+    return await getResponse();
+  } catch (err) {
+    return err;
+  };
+};
+
+
 const deleteRoomService = async (roomId: string) => {
   try {
     if (!dbUrl || !dbAPI) return null;
@@ -125,4 +152,4 @@ const deleteRoomService = async (roomId: string) => {
   }
 };
 
-export { roomExists, createNewRoomService, getRoom, deleteRoomService };
+export { roomExists, createNewRoomService, getRoom, deleteRoomService, getAllRooms };

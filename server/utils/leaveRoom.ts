@@ -1,6 +1,6 @@
-import { User } from "../user/userModel";
+import { UserDto } from "../user/userDtoModel";
 
-const leaveRoom = (userId: string, chatRoomUsers: User[]): User[] => {
+const leaveRoom = (userId: string, chatRoomUsers: UserDto[]): UserDto[] => {
   return chatRoomUsers.filter((user) => user.id !== userId);  
 };
 

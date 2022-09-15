@@ -1,66 +1,93 @@
-import { ChangeEvent, Dispatch, SetStateAction } from "react";
-import { Alert, Button, Input } from "@material-tailwind/react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
+import { Button, Typography } from "@material-tailwind/react";
 import { Socket } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
-import LoginForm from "../components/loginForm";
-import { useSelector } from "react-redux";
+import NewRoomForm from "../components/newRoomForm";
+import RoomPicker from "../components/roomPicker";
+import { getAllRooms } from "../services/dataService";
+import LoadingSpinner from "../components/micro/loadingSpinner";
 
 const Home = ({
   username,
-  setUsername,
   room,
   setRoom,
   socket,
+  user,
+  loading,
+  setLoading,
 }: {
   username: string;
-  setUsername: Dispatch<SetStateAction<string>>;
   room: string;
   setRoom: Dispatch<SetStateAction<string>>;
   socket: Socket;
+  user: any;
+  loading: boolean;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 }) => {
   const navigate = useNavigate();
-  // const selector = useSelector(state => state.user)
-  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    setUsername(value);
+  const [open, setOpen] = useState(false);
+  const [rooms, setRooms] = useState<any[]>([]);
+
+  const fetchRooms = () => {
+    
   };
 
-  const handleRoomChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const { value } = event.target;
-    setRoom(value);
-  };
+  useEffect(() => {
+    getAllRooms()
+      .then((res) => {
+        console.log({ res: res?.data.rooms });
+        setRooms(res?.data.rooms);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  }, []);
 
-  const handleEnterChat = () => {
-    if (username !== "" && room !== "") {
-      socket.emit("joinRoom", { username, room });
-      navigate("/chat", { replace: true });
-    } else {
-      return <Alert color="red">Filling out your name is a must!</Alert>;
-    }
-  };
-
+  if (loading || rooms === undefined) {
+    return <LoadingSpinner />;
+  }
   return (
     <div className="container mt-[30%] mx-auto text-center bg-[#eeeeee] rounded-2xl p-3 shadow-md">
-      <h1 className="text-3xl my-2 font-bold">Enter your name</h1>
-      <Input
-        label="name"
-        name="name"
-        color="indigo"
-        value={username}
-        onChange={handleNameChange}
+      <Typography variant="h1" className="text-3xl my-2 font-bold">
+        Welcome to Chat Me App
+      </Typography>
+      <Typography variant="h3" className="text-xl my-2 font-bold">
+        Choose a room or create a new one
+      </Typography>
+      <RoomPicker
+        loading={loading}
+        setLoading={setLoading}
+        username={username}
+        room={room}
+        setRoom={setRoom}
+        socket={socket}
+        user={user}
+        navigate={navigate}
+        rooms={rooms}
       />
-      <div className="w-72 ">
-        <label htmlFor="room">Choose room</label>
-        <select id="room" onChange={handleRoomChange}>
-          <option value="main">Main room</option>
-          <option value="tech">Tech</option>
-          <option value="gossip">Gossip</option>
-          <option value="travel">Travelling</option>
-        </select>
-      </div>
-      <Button className="mt-2" color='indigo' onClick={handleEnterChat}>
-        Enter Chat
+
+      <Button
+        className="mt-2"
+        color="indigo"
+        variant="text"
+        onClick={() => setOpen(!open)}
+      >
+        +New room
       </Button>
+      <NewRoomForm
+        open={open}
+        setOpen={setOpen}
+        loading={loading}
+        user={user}
+      />
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import {
-  changeRoomService,
   getCurrentUserService,
   loginUserService,
   registerUserService,
@@ -67,28 +66,8 @@ const getCurrentUserController = async (
   res.status(200).send({ user: user });
 };
 
-const changeRoomController = async (
-  req: any,
-  res: Response,
-  next: NextFunction
-) => {
-  const user = await getCurrentUserService(req);
-
-  if (user === null) {
-    return res.status(400).send({ message: "Something went wrong" });
-  }
-
-  const roomChanged = changeRoomService(user.id, req.body.roomId);
-
-  if (!roomChanged) {
-    return res.status(400).send({ message: "Something went wrong!" });
-  }
-  return res.status(200).send({ message: "Room changed successfully!" });
-};
-
 export {
   registerUserController,
   loginUserController,
   getCurrentUserController,
-  changeRoomController
 };

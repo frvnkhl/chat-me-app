@@ -8,17 +8,19 @@ const ChatSidebar = ({
   socket,
   username,
   room,
+  roomId,
 }: {
   socket: Socket;
   username: string;
   room: string;
+  roomId: string;
 }) => {
   const [roomUsers, setRoomUsers] = useState<User[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     socket.on("chatRoomUsers", (data: User[]) => {
-      console.log(data);
+      // console.log(data);
       setRoomUsers(data);
     });
     return () => {
@@ -28,7 +30,7 @@ const ChatSidebar = ({
 
   const leaveRoom = () => {
     const createdTime = Date.now();
-    socket.emit("leaveRoom", { username, room, createdTime });
+    socket.emit("leaveRoom", { username, room: roomId, createdTime });
 
     navigate("/", { replace: true });
   };

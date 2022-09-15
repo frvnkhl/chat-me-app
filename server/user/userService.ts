@@ -27,7 +27,6 @@ const registerUserService = async (req: Request) => {
           id: generateUniqueId(),
           username: req.body.username,
           password: hashedPassword,
-          room: "",
         };
 
         const userData = insertDataConfig(user, "users");
@@ -160,35 +159,9 @@ const getUser = async (username: string) => {
   }
 };
 
-const changeRoomService = async (userId: string, roomId: string) => {
-  try {
-    if (!dbUrl || !dbAPI) return null;
-    const data = sqlDataConfig(
-      `UPDATE realtime_chat_app.users SET room = '${roomId}' WHERE id = '${userId}'`
-    );
-    const config = postMethodConfig(dbUrl, dbAPI, data);
-    const response: any = await axios(config)
-      .then((res) => {
-        return true;
-      })
-      .catch((err) => {
-        return false;
-      });
-
-    const getResponse = async () => {
-      return await response;
-    };
-
-    return await getResponse();
-  } catch (err) {
-    return false;
-  }
-};
-
 export {
   registerUserService,
   userExists,
   loginUserService,
   getCurrentUserService,
-  changeRoomService,
 };

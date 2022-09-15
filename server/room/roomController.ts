@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import {
   createNewRoomService,
   deleteRoomService,
+  getAllRooms,
   getRoom,
   roomExists,
 } from "./roomService";
@@ -56,4 +57,30 @@ const deleteRoomController = async (
   return res.status(200).send({ message: "Room deleted successfully!" });
 };
 
-export { newRoomController, deleteRoomController };
+const getAllRoomsController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const rooms = await getAllRooms();
+
+  return res.status(200).send({ rooms: rooms });
+};
+
+const getRoomController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.params.id) {
+    return res.status(422).send({ message: "Missing attributes!" });
+  }
+
+  const roomId = req.params.id;
+
+  const room = await getRoom(roomId);
+
+  return res.status(200).send({ rooms: room });
+};
+
+export { newRoomController, deleteRoomController, getAllRoomsController, getRoomController };

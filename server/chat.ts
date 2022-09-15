@@ -1,11 +1,11 @@
 import { Server, Socket } from "socket.io";
 import { Message } from "./message/messageModel";
 import { harperGetMessages, harperSaveMessage } from "./message/messageService";
-import { User } from "./user/userModel";
+import { UserDto } from "./user/userDtoModel";
 import { leaveRoom } from "./utils/leaveRoom";
 const chatBot = "Chat Bot";
 let chatRoom: string;
-let allUsers: User[] = [];
+let allUsers: UserDto[] = [];
 
 class Connection {
   constructor(io: Server, socket: Socket) {
@@ -15,7 +15,6 @@ class Connection {
     //pass userId instead of username
     socket.on("joinRoom", (data: { username: string; room: string }) => {
       const { username, room } = data;
-      //get user
       socket.join(room);
 
       let createdTime = Date.now();
@@ -34,8 +33,8 @@ class Connection {
       });
 
       chatRoom = room;
-      //change user room to the name of the room
-      allUsers.push({ id: socket.id, username, room, password: 'lalala' });
+      //change user room to the id of the room
+      allUsers.push({ id: socket.id, username, room });
 
       //filter users in the room through the db
       const chatRoomUsers = allUsers.filter((user) => user.room === room);
@@ -77,8 +76,7 @@ class Connection {
     );
 
     socket.on("disconnect", () => {
-      console.log("User disconnected from the chat");
-
+      console.log("User disconnected from the chat");      
       const user = allUsers.find((user) => user.id == socket.id);
 
       if (user?.username) {
@@ -92,7 +90,6 @@ class Connection {
       }
     });
   }
-
   socket: Socket;
   io: Server;
 }

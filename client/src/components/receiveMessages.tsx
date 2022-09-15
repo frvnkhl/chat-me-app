@@ -10,7 +10,6 @@ const ReceiveMessages = ({ socket }: { socket: Socket }) => {
 
   useEffect(() => {
     socket.on("receiveMessage", (data: Message) => {
-      console.log({ data: data });
       setMessages((state) => [
         ...state,
         {
@@ -28,7 +27,6 @@ const ReceiveMessages = ({ socket }: { socket: Socket }) => {
 
   useEffect(() => {
     socket.on("last100Messages", (last100Messages) => {
-      console.log({ last100Messages: JSON.parse(last100Messages) });
       last100Messages = JSON.parse(last100Messages);
       last100Messages = sortMessagesByDate(last100Messages);
       setMessages((state) => [...last100Messages, ...state]);
@@ -48,8 +46,8 @@ const ReceiveMessages = ({ socket }: { socket: Socket }) => {
   const sortMessagesByDate = (messages: Message[]) => {
     return messages.sort(
       (a, b) =>
-        parseInt(a.createdTime.toDateString()) -
-        parseInt(b.createdTime.toDateString())
+        parseInt(a.createdTime.toString()) -
+        parseInt(b.createdTime.toString())
     );
   };
 
