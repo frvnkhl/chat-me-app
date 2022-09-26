@@ -1,5 +1,5 @@
 import { Button, Input } from "@material-tailwind/react";
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, KeyboardEvent } from "react";
 import { Socket } from "socket.io-client";
 
 const SendMessage = ({
@@ -22,13 +22,22 @@ const SendMessage = ({
     if (message !== "") {
       const createdTime = Date.now();
 
-      socket.emit("sendMessage", {username, room, message, createdTime});
-      setMessage('');
+      socket.emit("sendMessage", { username, room, message, createdTime });
+      setMessage("");
     }
   };
 
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if(event.key === "Enter") {
+      handleSendMessage();
+    }
+  }
+
   return (
-    <div className="flex mx-3 bg-[#EEEEEE] rounded-2xl p-3 shadow-md">
+    <div
+      className="flex mx-3 bg-[#EEEEEE] border-[1px] border-white rounded-2xl p-3 shadow-md"
+      onKeyDown={handleKeyDown}
+    >
       <Input
         label="Write a message"
         name="newMessage"

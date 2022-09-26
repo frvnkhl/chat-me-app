@@ -65,13 +65,13 @@ const ReceiveMessages = ({ socket }: { socket: Socket }) => {
 
   return (
     <div
-      className="bg-[#EEEEEE] rounded-2xl h-[50vh] my-5 mx-3 flex flex-col p-3 overflow-y-auto shadow-md"
+      className="bg-[#EEEEEE] border-[1px] border-white rounded-2xl h-[50vh] my-5 mx-3 flex flex-col p-3 overflow-y-auto shadow-md"
       ref={messagesColumnRef}
     >
       {messages.map((msg, i) => (
         <div
           key={i}
-          className="bg-[#548CA8] p-3 rounded-2xl text-[#EEEEEE] shadow-md m-3"
+          className="bg-[#548CA8] border-[1px] border-cyan-100 p-3 rounded-2xl text-[#EEEEEE] shadow-md m-3"
         >
           <div className="flex justify-between">
             <span>{msg.username}</span>

@@ -1,43 +1,33 @@
 import LoadingSpinner from "./micro/loadingSpinner";
 import { ReactComponent as RubbishBin } from "../img/icons/delete-icon.svg";
 import { Button } from "@material-tailwind/react";
-import { Dispatch, SetStateAction, SyntheticEvent } from "react";
+import { Dispatch, SetStateAction, SyntheticEvent, useEffect } from "react";
 import { deleteRoom } from "../services/dataService";
 import { Socket } from "socket.io-client";
 import { NavigateFunction } from "react-router";
+import { Room } from "../models/Room";
 
 const RoomPicker = ({
-  loading,
   setLoading,
   username,
-  room,
   setRoom,
   socket,
   user,
   navigate,
   rooms,
 }: {
-  loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
   username: string;
-  room: string;
   setRoom: Dispatch<SetStateAction<string>>;
   socket: Socket;
   user: any;
   navigate: NavigateFunction;
-  rooms: any[]
+  rooms: Room[];
 }) => {
   const handleEnterChat = async (event: SyntheticEvent, roomId: string) => {
     setLoading(true);
-    const input = event.target as HTMLElement;
-    const innerText = input.innerText;
-    const formattedInput = innerText.replace("#", "").toLowerCase();
-    console.log({ click: formattedInput });
-    console.log({ username: username, room: room });
     setRoom(roomId);
     if (username !== "" && roomId !== "") {
-      console.log({ user: username, room: room, roomId: roomId });
-
       socket.emit("joinRoom", { username, room: roomId });
       navigate("/chat", { replace: true });
     }
@@ -56,11 +46,9 @@ const RoomPicker = ({
   };
 
   return (
-    <>
-      {loading ? (
-        <LoadingSpinner />
-      ) : (
-        <div className="divide-solid divide-x divide-gray-400">
+    <div className="md:divide-solid md:divide-x divide-gray-400">
+      {user ? (
+        <>
           {rooms.map((room) =>
             room.admin === user.id ? (
               <div className="inline-flex" key={room.id}>
@@ -69,7 +57,7 @@ const RoomPicker = ({
                   color="indigo"
                   onClick={(event) => handleEnterChat(event, room.id)}
                   key={room.id}
-                  className="inline-block pr-3"
+                  className="inline-block pr-3 font-display"
                 >{`#${room.name}`}</Button>
                 <Button
                   variant="text"
@@ -87,13 +75,16 @@ const RoomPicker = ({
                   color="indigo"
                   onClick={(event) => handleEnterChat(event, room.id)}
                   key={room.id}
+                  className="font-display"
                 >{`#${room.name}`}</Button>
               </div>
             )
           )}
-        </div>
+        </>
+      ) : (
+        <LoadingSpinner />
       )}
-    </>
+    </div>
   );
 };
 

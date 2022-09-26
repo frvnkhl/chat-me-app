@@ -14,42 +14,56 @@ import LoadingSpinner from "./micro/loadingSpinner";
 const NewRoomForm = ({
   open,
   setOpen,
-  loading,
   user,
 }: {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  loading: boolean;
   user: any;
 }) => {
   const [newRoom, setNewRoom] = useState<string>("");
-  const [newRoomErr, setNewRoomErr] = useState(false);
-  
+  const [newRoomErr, setNewRoomErr] = useState({
+    error: false,
+    message: "",
+  });
+  const [formLoading, setFormLoading] = useState(false);
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setNewRoom(value);
   };
 
   const handleNewRoom = () => {
-    addNewRoom(newRoom, user.id).then((res) => {
-      if (res?.status === 200) {
-        setNewRoom("");
-        window.location.reload();
-      } else {
-        setNewRoomErr(true);
-      }
-    });
+    setFormLoading(true);
+    addNewRoom(newRoom, user.id)
+      .then((res) => {
+        if (res?.status === 200) {
+          setNewRoom("");
+          window.location.reload();
+        }
+      })
+      .catch((err) => {
+        setNewRoomErr({
+          error: true,
+          message: err.response.data.message,
+        });
+        setFormLoading(false);
+        console.log({ err: newRoomErr });
+      });
   };
 
   return (
     <Dialog open={open} handler={() => setOpen(!open)}>
-      {loading ? (
+      {formLoading ? (
         <LoadingSpinner />
       ) : (
         <div>
           <DialogHeader>Name your new room</DialogHeader>
-          <DialogBody>
-            {newRoomErr && <Alert color="red">Couldn't add the room!</Alert>}
+          <DialogBody className="block">
+            {newRoomErr.error && (
+              <Alert color="red" className="mb-4 font-semibold">
+                {newRoomErr.message}
+              </Alert>
+            )}
             <Input
               label="Name of your room"
               onChange={handleChange}

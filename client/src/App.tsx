@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import io from "socket.io-client";
@@ -6,10 +6,6 @@ import Chat from "./pages/Chat";
 import Auth from "./pages/Auth";
 import ProtectedRoute from "./components/privateRoute/protectedRoute";
 import { User } from "./models/User";
-import { getAllRooms } from "./services/dataService";
-import { authHeader } from "./services/authHeader";
-import authSlice from "./redux/features/authSlice";
-import { useAppSelector } from "./redux/hooks";
 
 const socket = io("http://localhost:6299");
 
@@ -37,7 +33,6 @@ const App = () => {
             element={
               <Home
                 username={username}
-                room={room}
                 setRoom={setRoom}
                 socket={socket}
                 user={user}

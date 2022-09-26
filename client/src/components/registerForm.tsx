@@ -65,7 +65,7 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="bg-[#eeeeee] rounded-xl p-3 my-5 mx-3 shadow-md">
+    <div className="bg-[#eeeeee] rounded-xl p-3 my-5 mx-auto shadow-md md:w-[50%]">
       {loading ? (
         <LoadingSpinner />
       ) : (

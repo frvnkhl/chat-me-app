@@ -9,6 +9,7 @@ import { useState } from "react";
 import LoadingSpinner from "./micro/loadingSpinner";
 import { setIsAuthenticated } from "../redux/features/authSlice";
 import { useAppDispatch } from "../redux/hooks";
+import { setToken } from "../redux/features/tokenSlice";
 
 type UserLoginForm = {
   username: string;
@@ -45,6 +46,7 @@ const LoginForm = () => {
         // console.log({res: res});
         dispatch(setUser(res.user));
         dispatch(setIsAuthenticated(true));
+        dispatch(setToken(res.token));
         localStorage.setItem('user', JSON.stringify(res.user));
         navigate('/');
     }).catch((err) => {
@@ -54,7 +56,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="bg-[#eeeeee] rounded-xl p-3 my-5 mx-3 shadow-md flex flex-col justify-center">
+    <div className="bg-[#eeeeee] rounded-xl p-3 my-5 mx-auto shadow-md flex flex-col justify-center md:w-[50%]">
       {loading ? (
         <LoadingSpinner/>
       ) : (

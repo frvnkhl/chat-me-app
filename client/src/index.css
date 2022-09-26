@@ -3,7 +3,11 @@
 @tailwind utilities;
 
 @layer base {
-    body {
-        background-color: #F2EBE9;
-    }
+  body {
+    background-color: #f2ebe9;
+  }
+
+  html {
+    font-family: "Kumbh Sans", sans-serif;
+  }
 }

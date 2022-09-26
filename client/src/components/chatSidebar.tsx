@@ -36,7 +36,7 @@ const ChatSidebar = ({
   };
 
   return (
-    <div className="bg-[#548CA8] rounded-xl p-3 my-5 mx-3 text-[#EEEEEE] flex flex-col justify-between h-full shadow-md overflow-auto">
+    <div className="bg-[#548CA8] border-[1px] border-cyan-100 rounded-xl p-3 my-5 mx-3 text-[#EEEEEE] flex flex-col justify-between h-full shadow-md overflow-auto">
       <Typography variant="h3">{`${room} room`}</Typography>
       <div className="flex-1">
         {roomUsers.length > 0 && <Typography variant="h5">Users:</Typography>}
