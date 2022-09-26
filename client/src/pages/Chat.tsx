@@ -19,7 +19,6 @@ const Chat = ({
 
   const getRoomName = useCallback(() => {
     getRoom(room).then((res) => {
-      console.log({ response: res });
       setRoomName(res?.data.rooms.name);
     });
   }, [room]);

@@ -33,7 +33,6 @@ const LoginForm = () => {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<UserLoginForm>({
     resolver: yupResolver(validationSchema),

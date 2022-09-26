@@ -1,4 +1,3 @@
-import React from "react";
 import LoginForm from "../components/loginForm";
 import Nav from "../components/nav";
 import RegisterForm from "../components/registerForm";
