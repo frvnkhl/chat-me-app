@@ -7,6 +7,7 @@ import * as userRoutes from "./user/userRoutes";
 import * as roomRoutes from "./room/roomRoutes";
 import * as bodyParser from "body-parser";
 import cors from "cors";
+import * as path from 'path';
 dotenv.config();
 
 const app: Express = express();
@@ -21,6 +22,7 @@ app.use(
     methods: "GET, POST, PATCH, DELETE",
   })
 );
+app.use(express.static(path.join(__dirname, "../client/build")));
 app.use("/api/user", userRoutes.router);
 app.use("/api/room", roomRoutes.router);
 
@@ -33,6 +35,10 @@ const io = new Server(httpServer, {
   },
 });
 chat(io);
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"));
+});
 
 httpServer.listen(port, () => {
   console.log(`Server running on port ${port}`);

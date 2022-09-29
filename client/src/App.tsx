@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import io from "socket.io-client";
 import Chat from "./pages/Chat";
 import Auth from "./pages/Auth";
-import ProtectedRoute from "./components/privateRoute/protectedRoute";
+import ProtectedRoute from "./components/routes/protectedRoute";
 import { User } from "./models/User";
 
 const socket = io("http://localhost:6299");
@@ -23,6 +23,7 @@ const App = () => {
       setUser(user);
     }
   }, [retrievedUser]);
+
 
   return (
     <BrowserRouter>

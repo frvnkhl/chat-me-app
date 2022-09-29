@@ -1,7 +1,7 @@
 import LoadingSpinner from "./micro/loadingSpinner";
 import { ReactComponent as RubbishBin } from "../img/icons/delete-icon.svg";
 import { Button } from "@material-tailwind/react";
-import { Dispatch, SetStateAction, SyntheticEvent, useEffect } from "react";
+import { Dispatch, SetStateAction, SyntheticEvent } from "react";
 import { deleteRoom } from "../services/dataService";
 import { Socket } from "socket.io-client";
 import { NavigateFunction } from "react-router";
