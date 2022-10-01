@@ -27,7 +27,6 @@ const Chat = ({
     getRoomName();
   }, [getRoomName]);
 
-  
   return (
     <>
       <Nav />

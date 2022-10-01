@@ -31,6 +31,7 @@ const ChatSidebar = ({
   const leaveRoom = () => {
     const createdTime = Date.now();
     socket.emit("leaveRoom", { username, room: roomId, createdTime });
+
     navigate("/", { replace: true });
   };
 

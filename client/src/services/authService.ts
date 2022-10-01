@@ -1,19 +1,24 @@
 import { server } from "../helpers/axios";
+import apiURL from "./apiURL";
 
 //API call to register a user
 const registerUser = async (userData: {
   username: string;
   password: string;
 }) => {
-  return await server.post("/api/user/register", userData, {
-    withCredentials: true,
-  });
+  return await server.post(
+    `${apiURL}/api/user/register`,
+    userData,
+    {
+      withCredentials: true,
+    }
+  );
 };
 
 //API call to login user
 const loginUser = async (userData: { username: string; password: string }) => {
   return await server
-    .post("/api/user/login", userData, {
+    .post(`${apiURL}/api/user/login`, userData, {
       withCredentials: true,
     })
     .then((res) => {
