@@ -6,8 +6,9 @@ import Chat from "./pages/Chat";
 import Auth from "./pages/Auth";
 import ProtectedRoute from "./components/privateRoute/protectedRoute";
 import { User } from "./models/User";
+import apiURL from "./services/apiURL";
 
-const socket = io("http://localhost:6299");
+const socket = io(apiURL);
 
 const App = () => {
   const [username, setUsername] = useState<string>("");

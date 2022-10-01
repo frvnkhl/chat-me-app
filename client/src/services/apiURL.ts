@@ -1,3 +1,3 @@
-const apiURL = "http://localhost:6299";
+const apiURL = "https://chat-me-app.onrender.com";
 
 export default apiURL;
