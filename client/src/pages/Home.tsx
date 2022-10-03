@@ -84,8 +84,8 @@ const Home = ({
         >
           +New room
         </Button>
-        <NewRoomForm open={open} setOpen={setOpen} user={user} />
       </div>
+        <NewRoomForm open={open} setOpen={setOpen} user={user} />
     </>
   );
 };

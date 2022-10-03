@@ -52,7 +52,7 @@ const NewRoomForm = ({
   };
 
   return (
-    <Dialog open={open} handler={() => setOpen(!open)}>
+    <Dialog open={open} handler={() => setOpen(!open)} className='min-w-full md:min-w-fit'>
       {formLoading ? (
         <LoadingSpinner />
       ) : (
